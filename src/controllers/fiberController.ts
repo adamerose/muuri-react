@@ -147,12 +147,12 @@ export const FlagProp = 'muuri-react-flag';
  */
 function getFiber(grid: HTMLElement): GridElementFiber {
   const key = Object.keys(grid).find((key) =>
-    key.startsWith('__reactInternalInstance$')
+    key.startsWith('__reactFiber$')
   );
 
   invariant(
     typeof key === 'string',
-    'Cannot find the __reactInternalInstance$'
+    'Cannot find the __reactFiber$'
   );
 
   // @ts-ignore

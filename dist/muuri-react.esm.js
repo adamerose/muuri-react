@@ -829,9 +829,9 @@ var FlagProp = 'muuri-react-flag';
 
 function getFiber(grid) {
   var key = Object.keys(grid).find(function (key) {
-    return key.startsWith('__reactInternalInstance$');
+    return key.startsWith('__reactFiber$');
   });
-  invariant(typeof key === 'string', 'Cannot find the __reactInternalInstance$'); // @ts-ignore
+  invariant(typeof key === 'string', 'Cannot find the __reactFiber$'); // @ts-ignore
 
   return grid[key];
 }
