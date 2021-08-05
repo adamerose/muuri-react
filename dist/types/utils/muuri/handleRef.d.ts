@@ -1,4 +1,3 @@
-/// <reference types="react" />
 /**
  * Set the value in the ref.
  *

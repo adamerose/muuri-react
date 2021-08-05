@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import PropTypes from 'prop-types';
 /** Interfaces */
 import type { ItemComponentProps } from '../interfaces';
