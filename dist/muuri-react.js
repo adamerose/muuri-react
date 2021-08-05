@@ -3378,7 +3378,9 @@
     }, [children]); // IsChanged flags.
 
     var isFilterChanged = useReference([filter]);
-    var isSortChanged = useReference([sort, sortOptions]);
+    var isSortChanged = useReference([sort, sortOptions]); // @ts-ignore
+
+    store.childrenController._children = React.Children.toArray(children) || [];
     store.fiberController.useInit(store.gridRef);
     store.itemRemoveController.useInit();
     store.itemAddController.useInit();

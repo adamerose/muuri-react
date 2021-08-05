@@ -1,5 +1,5 @@
 /* React */
-import React, {createRef, RefObject, useEffect, useRef, ReactElement} from 'react';
+import React, {Children, createRef, RefObject, useEffect, useRef, ReactElement} from 'react';
 import PropTypes from 'prop-types';
 /* Components */
 import {ItemComponent} from './itemComponent';
@@ -441,6 +441,8 @@ export function GridComponent({
   const isFilterChanged = useReference([filter]);
   const isSortChanged = useReference([sort, sortOptions]);
 
+  // @ts-ignore
+  store.childrenController._children = Children.toArray(children) || [];
   store.fiberController.useInit(store.gridRef);
   store.itemRemoveController.useInit();
   store.itemAddController.useInit();
