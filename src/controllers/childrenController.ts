@@ -39,7 +39,6 @@ export class ChildrenController {
     // We can't use the ChildrenArray because we need the users
     // key provided in the components and not the escaped one (e.g. .$1).
     this._children = newChildren || [];
-    this._oldChildrenArray = newChildrenArray;
   }
 
   /**
