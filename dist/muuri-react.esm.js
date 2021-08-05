@@ -2167,23 +2167,23 @@ function GridComponent(_ref) {
   var previousChildren = useRef([]);
   useEffect(function () {
     previousChildren.current = children ? children : [];
-  }, [children]);
-  store.childrenController._oldChildrenArray = previousChildren.current; // Init the controllers.
-
-  store.childrenController.useInit(children);
-  store.fiberController.useInit(store.gridRef);
-  store.itemRemoveController.useInit();
-  store.itemAddController.useInit();
-  store.layoutController.useInit(); // IsChanged flags.
+  }, [children]); // IsChanged flags.
 
   var isFilterChanged = useReference([filter]);
-  var isSortChanged = useReference([sort, sortOptions]); // Get items to add/remove.
-
+  var isSortChanged = useReference([sort, sortOptions]);
   useEffect(function () {
-    // Set drag enabled option.
+    // Init the controllers.
+    store.childrenController._oldChildrenArray = previousChildren.current;
+    store.childrenController.useInit(children);
+    store.fiberController.useInit(store.gridRef);
+    store.itemRemoveController.useInit();
+    store.itemAddController.useInit();
+    store.layoutController.useInit(); // Set drag enabled option.
+
     addDecoration(grid, {
       dragEnabled: dragEnabled
-    }); // Set the items data.
+    }); // Get items to add/remove.
+    // Set the items data.
 
     vars.indicesToAdd = store.childrenController.getIndicesToAdd();
     vars.addedDOMItems = store.fiberController.getStateNodes(vars.indicesToAdd);
@@ -2199,20 +2199,19 @@ function GridComponent(_ref) {
     store.onFilter = onFilter;
     store.onSort = onSort;
     store.onSend = onSend;
-  });
-  /* ------------------- */
+    /* ------------------- */
 
-  /* ----- ACTIONS ----- */
+    /* ----- ACTIONS ----- */
 
-  /* ------------------- */
+    /* ------------------- */
 
-  useEffect(function () {
     /* ---------------------- */
 
     /* ---- ADD & REMOVE ---- */
 
     /* ---------------------- */
     // Remove items.
+
     if (vars.itemsToRemove.length) {
       removeItems(grid, vars.itemsToRemove); // Set the flag.
 

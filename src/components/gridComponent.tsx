@@ -437,23 +437,23 @@ export function GridComponent({
     previousChildren.current = children ? children : [];
   }, [children]);
 
-  store.childrenController._oldChildrenArray = previousChildren.current;
-
-  // Init the controllers.
-  store.childrenController.useInit(children);
-  store.fiberController.useInit(store.gridRef);
-  store.itemRemoveController.useInit();
-  store.itemAddController.useInit();
-  store.layoutController.useInit();
-
   // IsChanged flags.
   const isFilterChanged = useReference([filter]);
   const isSortChanged = useReference([sort, sortOptions]);
 
-  // Get items to add/remove.
   useEffect(() => {
+    // Init the controllers.
+    store.childrenController._oldChildrenArray = previousChildren.current;
+    store.childrenController.useInit(children);
+    store.fiberController.useInit(store.gridRef);
+    store.itemRemoveController.useInit();
+    store.itemAddController.useInit();
+    store.layoutController.useInit();
+
     // Set drag enabled option.
     addDecoration(grid, {dragEnabled});
+
+    // Get items to add/remove.
 
     // Set the items data.
     vars.indicesToAdd = store.childrenController.getIndicesToAdd();
@@ -471,13 +471,11 @@ export function GridComponent({
     store.onFilter = onFilter;
     store.onSort = onSort;
     store.onSend = onSend;
-  });
 
-  /* ------------------- */
-  /* ----- ACTIONS ----- */
-  /* ------------------- */
+    /* ------------------- */
+    /* ----- ACTIONS ----- */
+    /* ------------------- */
 
-  useEffect(() => {
     /* ---------------------- */
     /* ---- ADD & REMOVE ---- */
     /* ---------------------- */
