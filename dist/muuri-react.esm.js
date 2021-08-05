@@ -2171,14 +2171,14 @@ function GridComponent(_ref) {
 
   var isFilterChanged = useReference([filter]);
   var isSortChanged = useReference([sort, sortOptions]);
+  store.fiberController.useInit(store.gridRef);
+  store.itemRemoveController.useInit();
+  store.itemAddController.useInit();
+  store.layoutController.useInit();
   useEffect(function () {
     // Init the controllers.
     store.childrenController._oldChildrenArray = previousChildren.current;
-    store.childrenController.useInit(children);
-    store.fiberController.useInit(store.gridRef);
-    store.itemRemoveController.useInit();
-    store.itemAddController.useInit();
-    store.layoutController.useInit(); // Set drag enabled option.
+    store.childrenController.useInit(children); // Set drag enabled option.
 
     addDecoration(grid, {
       dragEnabled: dragEnabled
