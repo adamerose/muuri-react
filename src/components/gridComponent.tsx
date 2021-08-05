@@ -1,5 +1,5 @@
 /* React */
-import React, {createRef, RefObject, useEffect} from 'react';
+import React, {createRef, RefObject, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 /* Components */
 import {ItemComponent} from './itemComponent';
@@ -430,6 +430,14 @@ export function GridComponent({
   /* ---------------- */
   /* ----- INIT ----- */
   /* -----------------*/
+
+
+  const previousChildren = useRef([]);
+  useEffect(() => {
+    previousChildren.current = children;
+  }, [children]);
+
+  store.childrenController._oldChildrenArray = previousChildren.current;
 
   // Init the controllers.
   store.childrenController.useInit(children);
