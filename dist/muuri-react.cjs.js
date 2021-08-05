@@ -1074,7 +1074,7 @@ var ChildrenController = /*#__PURE__*/function () {
      *
      * @param newChildren - the new children.
      */
-    function useInit(newChildren) {
+    function useInit(newChildren, previousChildren) {
       // @ts-ignore
       // We need to ensure that the children are in an array.
       var newChildrenArray = React.Children.toArray(newChildren); // The indices to add.
@@ -1084,7 +1084,9 @@ var ChildrenController = /*#__PURE__*/function () {
       // We can't use the ChildrenArray because we need the users
       // key provided in the components and not the escaped one (e.g. .$1).
 
-      this._children = newChildren || [];
+      this._children = newChildren || []; // @ts-ignore
+
+      this._oldChildrenArray = React.Children.toArray(previousChildren);
     }
     /**
      * Remove a child in the given position and return it.
@@ -2189,25 +2191,22 @@ function GridComponent(_ref) {
   var previousChildren = React.useRef([]);
   React.useEffect(function () {
     previousChildren.current = children ? children : [];
-  }, [children]); // IsChanged flags.
+  }, [children]); // Init the controllers.
 
-  var isFilterChanged = useReference([filter]);
-  var isSortChanged = useReference([sort, sortOptions]); // @ts-ignore
-
-  store.childrenController._children = React.Children.toArray(children) || [];
+  store.childrenController.useInit(children, previousChildren.current);
   store.fiberController.useInit(store.gridRef);
   store.itemRemoveController.useInit();
   store.itemAddController.useInit();
-  store.layoutController.useInit();
-  React.useEffect(function () {
-    // Init the controllers.
-    store.childrenController._oldChildrenArray = previousChildren.current;
-    store.childrenController.useInit(children); // Set drag enabled option.
+  store.layoutController.useInit(); // IsChanged flags.
 
+  var isFilterChanged = useReference([filter]);
+  var isSortChanged = useReference([sort, sortOptions]); // Get items to add/remove.
+
+  React.useEffect(function () {
+    // Set drag enabled option.
     addDecoration(grid, {
       dragEnabled: dragEnabled
-    }); // Get items to add/remove.
-    // Set the items data.
+    }); // Set the items data.
 
     vars.indicesToAdd = store.childrenController.getIndicesToAdd();
     vars.addedDOMItems = store.fiberController.getStateNodes(vars.indicesToAdd);
@@ -2223,19 +2222,20 @@ function GridComponent(_ref) {
     store.onFilter = onFilter;
     store.onSort = onSort;
     store.onSend = onSend;
-    /* ------------------- */
+  });
+  /* ------------------- */
 
-    /* ----- ACTIONS ----- */
+  /* ----- ACTIONS ----- */
 
-    /* ------------------- */
+  /* ------------------- */
 
+  React.useEffect(function () {
     /* ---------------------- */
 
     /* ---- ADD & REMOVE ---- */
 
     /* ---------------------- */
     // Remove items.
-
     if (vars.itemsToRemove.length) {
       removeItems(grid, vars.itemsToRemove); // Set the flag.
 

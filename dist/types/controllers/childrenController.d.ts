@@ -20,7 +20,7 @@ export declare class ChildrenController {
      *
      * @param newChildren - the new children.
      */
-    useInit(newChildren?: ReactElement[]): void;
+    useInit(newChildren?: ReactElement[], previousChildren?: ReactElement[]): void;
     /**
      * Remove a child in the given position and return it.
      *

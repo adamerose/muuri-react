@@ -1,5 +1,5 @@
 /* React */
-import React, {Children, createRef, RefObject, useEffect, useRef, ReactElement} from 'react';
+import React, {createRef, RefObject, useEffect, useRef, ReactElement} from 'react';
 import PropTypes from 'prop-types';
 /* Components */
 import {ItemComponent} from './itemComponent';
@@ -437,26 +437,21 @@ export function GridComponent({
     previousChildren.current = children ? children : [];
   }, [children]);
 
-  // IsChanged flags.
-  const isFilterChanged = useReference([filter]);
-  const isSortChanged = useReference([sort, sortOptions]);
-
-  // @ts-ignore
-  store.childrenController._children = Children.toArray(children) || [];
+  // Init the controllers.
+  store.childrenController.useInit(children, previousChildren.current);
   store.fiberController.useInit(store.gridRef);
   store.itemRemoveController.useInit();
   store.itemAddController.useInit();
   store.layoutController.useInit();
 
-  useEffect(() => {
-    // Init the controllers.
-    store.childrenController._oldChildrenArray = previousChildren.current;
-    store.childrenController.useInit(children);
+  // IsChanged flags.
+  const isFilterChanged = useReference([filter]);
+  const isSortChanged = useReference([sort, sortOptions]);
 
+  // Get items to add/remove.
+  useEffect(() => {
     // Set drag enabled option.
     addDecoration(grid, {dragEnabled});
-
-    // Get items to add/remove.
 
     // Set the items data.
     vars.indicesToAdd = store.childrenController.getIndicesToAdd();
@@ -474,11 +469,13 @@ export function GridComponent({
     store.onFilter = onFilter;
     store.onSort = onSort;
     store.onSend = onSend;
+  })
 
-    /* ------------------- */
-    /* ----- ACTIONS ----- */
-    /* ------------------- */
+  /* ------------------- */
+  /* ----- ACTIONS ----- */
+  /* ------------------- */
 
+  useEffect(() => {
     /* ---------------------- */
     /* ---- ADD & REMOVE ---- */
     /* ---------------------- */

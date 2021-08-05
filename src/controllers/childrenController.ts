@@ -23,7 +23,7 @@ export class ChildrenController {
    *
    * @param newChildren - the new children.
    */
-  useInit(newChildren?: ReactElement[]): void {
+  useInit(newChildren?: ReactElement[], previousChildren?: ReactElement[]): void {
     // @ts-ignore
     // We need to ensure that the children are in an array.
     const newChildrenArray: ReactElement[] = Children.toArray(newChildren);
@@ -39,6 +39,8 @@ export class ChildrenController {
     // We can't use the ChildrenArray because we need the users
     // key provided in the components and not the escaped one (e.g. .$1).
     this._children = newChildren || [];
+    // @ts-ignore
+    this._oldChildrenArray = Children.toArray(previousChildren);
   }
 
   /**
